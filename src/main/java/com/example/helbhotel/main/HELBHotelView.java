@@ -58,7 +58,7 @@ public class HELBHotelView {
             setupRooms("A");
             setupFloorSelector();
             setupReservationActionBoxes();
-            setupSuggestionsComponents();
+            setupSuggestions();
             HELBReservationDetailView = new HELBReservationDetailView(controller);
             HELBRoomDetailView = new HELBRoomDetailView(controller);
             HELBVerifyCodeView = new HELBVerifyCodeView(controller);
@@ -227,7 +227,7 @@ public class HELBHotelView {
                         String selectedMode = reservationModeSelector.getValue();
                         controller.setAssignmentStrategy(selectedMode);
                         controller.getSuggestions(); // la stratégie est mise à jour
-                        setupSuggestionsComponents(); // recharge la liste dans la vue
+                        setupSuggestions(); // recharge la liste dans la vue
                     });
 
             HBox sortContainer = new HBox(10);
@@ -249,7 +249,7 @@ public class HELBHotelView {
             sortComboBox.setOnAction(e -> {
                 String selected = sortComboBox.getValue();
                 controller.sortSuggestionsBy(selected);
-                setupSuggestionsComponents(); // recharge la liste triée
+                setupSuggestions(); // recharge la liste triée
             });
 
 
@@ -259,7 +259,7 @@ public class HELBHotelView {
             topBox.getChildren().add(reservationActionBoxesContainer);
         }
 
-        public void setupSuggestionsComponents() {
+        public void setupSuggestions() {
             List<RoomAssignmentSuggestion> suggestions = controller.getSuggestions();
             buttonPanel.getChildren().clear();
             for (int i = 0; i < suggestions.size(); i++) {
@@ -285,7 +285,7 @@ public class HELBHotelView {
 
         public void reloadData() {
             setupRooms("A");
-            setupSuggestionsComponents();
+            setupSuggestions();
         }
     }
 

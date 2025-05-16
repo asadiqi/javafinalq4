@@ -93,25 +93,24 @@ public class HELBHotelController {
     }
 
     public void setAssignmentStrategy(String mode) {
+         hotel.setRoomAssignmentSuggestions(new ArrayList<>());
         switch (mode) {
             case "Random Assignment":
                 context.setStrategy(new RandomAssignmentStrategy());
                 break;
             case "Quiet Zone":
-                // Assure-toi d'implémenter la stratégie QuietZone aussi, sinon utilise Random pour l'instant
-                //context.setStrategy(new QuietZoneAssignmentStrategy());
+                context.setStrategy(new NoStrategy());
                 break;
             case "Stay Purpose":
                 context.setStrategy(new StayPurposeAssignmentStrategy());
                 break;
             case "Sequential Assignment":
-                // context.setStrategy(new SequentialAssignmentStrategy());
+                context.setStrategy(new NoStrategy());
                 break;
             default:
-                context.setStrategy(new RandomAssignmentStrategy());
+                context.setStrategy(new NoStrategy());
         }
         context.suggestRoomsAssigment(hotel);
-
     }
 
 

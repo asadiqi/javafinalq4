@@ -16,7 +16,7 @@ public class RoomAssignmentContext {
 
     public void suggestRoomsAssigment(Hotel hotel) {
         if (strategy == null)
-            throw new IllegalStateException(ERROR_STRATEGY_NOT_SET);
+            return;
         strategy.suggestRoomsAssigment(hotel);
     }
 
