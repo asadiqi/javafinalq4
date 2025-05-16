@@ -1,47 +1,110 @@
-/*package com.example.helbhotel.strategy;
+package com.example.helbhotel.main;
 
-import com.example.helbhotel.a.Hotel;
-import com.example.helbhotel.a.Room;
-import com.example.helbhotel.parser.Reservation;
-
-import com.example.helbhotel.a.Room;
-import com.example.helbhotel.parser.Reservation;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class QuietZoneAssignmentStrategy implements RoomAssignmentStrategy {
+
     @Override
-    public Room assignRoom(Hotel hotel, Reservation reservation) {
-       /* List<Room> filtered = availableRooms.stream()
-                .filter(room -> {
-                    // Si le client a des enfants et cherche une chambre calme, on l'évite
-                    if (reservation.nombreEnfants > 0 && !roomHasNonChildrenNearby(room)) return false;
-                    // Si le client est fumeur et cherche une chambre non-fumeur, on l'évite
-                    if (reservation.fumeur && !isWindowRoom(room)) return false;
-                    return true;
-                })
-              .collect(Collectors.toList());
+    public void suggestRoomsAssigment(Hotel hotel) {
+        List<RoomAssignmentSuggestion> suggestions = new ArrayList<>();
+        List<Reservation> reservations = hotel.getReservations();
 
+        // Récupère toutes les chambres disponibles
+        List<Room> availableRooms = hotel.getRooms();
 
+        // On récupère la structure du bâtiment
+        List<Room[][]> building = hotel.getBuilding();
 
-        return filtered.isEmpty() ? null : filtered.get(0); // ou random
+        for (Reservation reservation : reservations) {
+            Room assignedRoom = null;
 
+            // Parcours toutes les chambres disponibles et essaie de trouver une chambre adaptée
+            for (Room room : availableRooms) {
+                if (!room.isAvailable()) continue;
 
+                // Trouve la position de la chambre dans le building (floor, i, j)
+                Position pos = findRoomPosition(building, room);
+                if (pos == null) continue;
 
-        return  null;
+                boolean isOnEdge = isOnBuildingEdge(pos, building.get(pos.floor).length, building.get(pos.floor)[0].length);
+
+                // Conditions pour fumeurs : doit être en bordure (avec fenêtre)
+                if (reservation.isSmoker() && !isOnEdge) {
+                    continue;
+                }
+
+                // Conditions pour clients avec enfants : ne pas être à côté d’une chambre sans enfants
+                if (reservation.hasChildren()) {
+                    if (isNextToRoomWithoutChildren(building.get(pos.floor), pos.i, pos.j)) {
+                        continue;
+                    }
+                }
+
+                // Si on arrive ici, la chambre convient
+                assignedRoom = room;
+                break;
+            }
+
+            if (assignedRoom != null) {
+                suggestions.add(new RoomAssignmentSuggestion(assignedRoom, reservation));
+                availableRooms.remove(assignedRoom);  // Ne plus la proposer aux autres
+            }
+        }
+
+        hotel.setRoomAssignmentSuggestions(suggestions);
     }
 
-    private boolean roomHasNonChildrenNearby(Room room) {
-        // TODO: Logique sur les chambres adjacentes si nécessaire
+    // Méthode pour trouver la position de la chambre dans le bâtiment
+    private Position findRoomPosition(List<Room[][]> building, Room room) {
+        for (int f = 0; f < building.size(); f++) {
+            Room[][] floor = building.get(f);
+            for (int i = 0; i < floor.length; i++) {
+                for (int j = 0; j < floor[i].length; j++) {
+                    if (floor[i][j] == null) continue;
+                    if (floor[i][j].equals(room)) {
+                        return new Position(f, i, j);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    // Vérifie si la chambre est sur le bord du bâtiment (première/dernière ligne ou colonne)
+    private boolean isOnBuildingEdge(Position pos, int maxRows, int maxCols) {
+        return pos.i == 0 || pos.i == maxRows - 1 || pos.j == 0 || pos.j == maxCols - 1;
+    }
+
+    // Vérifie si une chambre est adjacente à une chambre sans enfants
+    private boolean isNextToRoomWithoutChildren(Room[][] floor, int i, int j) {
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int d = 0; d < 4; d++) {
+            int ni = i + dx[d];
+            int nj = j + dy[d];
+
+            if (ni >= 0 && ni < floor.length && nj >= 0 && nj < floor[0].length) {
+                Room neighbor = floor[ni][nj];
+                if (neighbor != null && neighbor.getReservation() != null) {
+                    if (!neighbor.getReservation().hasChildren()) {
+                        return true; // Voisin sans enfants trouvé
+                    }
+                }
+            }
+        }
         return false;
     }
 
-    private boolean isWindowRoom(Room room) {
-        int number = room.getRoomNumber();
-        return number % 4 == 1 || number % 4 == 0; // Exemples : début ou fin de ligne
+    // Classe interne pour garder position floor, ligne, colonne
+    private static class Position {
+        int floor, i, j;
+
+        Position(int floor, int i, int j) {
+            this.floor = floor;
+            this.i = i;
+            this.j = j;
+        }
     }
 }
-
- */
-

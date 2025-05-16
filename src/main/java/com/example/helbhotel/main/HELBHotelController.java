@@ -99,7 +99,7 @@ public class HELBHotelController {
                 context.setStrategy(new RandomAssignmentStrategy());
                 break;
             case "Quiet Zone":
-                context.setStrategy(new NoStrategy());
+                context.setStrategy(new QuietZoneAssignmentStrategy());
                 break;
             case "Stay Purpose":
                 context.setStrategy(new StayPurposeAssignmentStrategy());
