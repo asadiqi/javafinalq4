@@ -1,6 +1,13 @@
 package com.example.helbhotel.main;
 
+import com.example.helbhotel.main.Hotel;
+import com.example.helbhotel.main.Room;
+import com.example.helbhotel.main.RoomAssignmentSuggestion;
+import com.example.helbhotel.main.Ticket;
+import com.example.helbhotel.main.TicketFactory;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class HELBHotelController {
 
@@ -90,16 +97,16 @@ public class HELBHotelController {
             case "Random Assignment":
                 context.setStrategy(new RandomAssignmentStrategy());
                 break;
-            //case "Quiet Zone":
+            case "Quiet Zone":
                 // Assure-toi d'implémenter la stratégie QuietZone aussi, sinon utilise Random pour l'instant
                 //context.setStrategy(new QuietZoneAssignmentStrategy());
-              //  break;
+                break;
             case "Stay Purpose":
                 context.setStrategy(new StayPurposeAssignmentStrategy());
                 break;
-           // case "Sequential Assignment":
+            case "Sequential Assignment":
                 // context.setStrategy(new SequentialAssignmentStrategy());
-               // break;
+                break;
             default:
                 context.setStrategy(new RandomAssignmentStrategy());
         }
