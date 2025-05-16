@@ -1,14 +1,18 @@
 package com.example.helbhotel.main;
 
-import com.example.helbhotel.main.Hotel;
-import com.example.helbhotel.main.Reservation;
-import com.example.helbhotel.main.Room;
-import com.example.helbhotel.main.RoomAssignmentSuggestion;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StayPurposeAssignmentStrategy implements RoomAssignmentStrategy {
+
+    private final String TYPE_BUSINESS = "Business";
+    private final String TYPE_LUXURY = "Luxe";
+    private final String TYPE_ECONOMIC = "Economic";
+    private final String STAY_PURPOSE_BUSINESS = "Affaire";
+    private final int FIRST_INDEX = 0;
+    private final int Start_INDEX = 0;
 
     @Override
     public void suggestRoomsAssigment(Hotel hotel) {
@@ -25,19 +29,19 @@ public class StayPurposeAssignmentStrategy implements RoomAssignmentStrategy {
         for (Room room : availableRooms) {
             if (!room.isAvailable()) continue;
             switch (room.getRoomType()) {
-                case "Business":
+                case TYPE_BUSINESS:
                     businessRooms.add(room);
                     break;
-                case "Luxe":
+                case TYPE_LUXURY:
                     luxuryRooms.add(room);
                     break;
-                case "Economic":
+                case TYPE_ECONOMIC:
                     economicRooms.add(room);
                     break;
             }
         }
 
-        for (int i = 0; i < reservations.size(); i++) {
+        for (int i = Start_INDEX; i < reservations.size(); i++) {
             Reservation reservation = reservations.get(i);
             Room assignedRoom = null;
 
@@ -45,22 +49,22 @@ public class StayPurposeAssignmentStrategy implements RoomAssignmentStrategy {
             boolean isSmoker = reservation.isSmoker();
             boolean hasChildren = reservation.hasChildren();
 
-            if ("Affaire".equalsIgnoreCase(stayPurpose)) {
+            if (STAY_PURPOSE_BUSINESS.equalsIgnoreCase(stayPurpose)) {
                 // Si motif Affaire -> Business
                 if (!businessRooms.isEmpty()) {
-                    assignedRoom = businessRooms.remove(0);
+                    assignedRoom = businessRooms.remove(FIRST_INDEX);
                 }
             } else {
                 // Tourisme ou Autre
                 if (!isSmoker && !hasChildren) {
                     // chambre Luxe
                     if (!luxuryRooms.isEmpty()) {
-                        assignedRoom = luxuryRooms.remove(0);
+                        assignedRoom = luxuryRooms.remove(FIRST_INDEX);
                     }
                 } else {
                     // chambre Économique
                     if (!economicRooms.isEmpty()) {
-                        assignedRoom = economicRooms.remove(0);
+                        assignedRoom = economicRooms.remove(FIRST_INDEX);
                     }
                 }
             }
