@@ -11,8 +11,8 @@ public class Hotel {
     private Room[][] floor = new Room[4][4];
     private HConfigParser configParser;
     private ReservationParser reservationParser;
-    private static final String HCONFIG_FILE_PATH = "C:\\Users\\sadiq\\Desktop\\Cours_Q4\\Java\\Final\\HELBHotel\\src\\main\\java\\com\\example\\helbhotel\\main\\hconfig";
-    private static final String CSV_FILE_PATH = "C:\\Users\\sadiq\\Desktop\\Cours_Q4\\Java\\Final\\HELBHotel\\src\\main\\java\\com\\example\\helbhotel\\main\\reservation.csv";
+    private static final String HCONFIG_FILE_PATH = "C:\\Users\\sadiq\\Desktop\\javafinalq4\\src\\main\\java\\com\\example\\helbhotel\\main\\hconfig";
+    private static final String CSV_FILE_PATH = "C:\\Users\\sadiq\\Desktop\\javafinalq4\\src\\main\\java\\com\\example\\helbhotel\\main\\reservation.csv";
 
     private List<Reservation> reservations = new ArrayList<>();
     private List<RoomAssignmentSuggestion> roomAssignmentSuggestions = new ArrayList<>();

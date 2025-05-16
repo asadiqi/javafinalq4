@@ -1,16 +1,14 @@
 package com.example.helbhotel.main;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class StayPurposeAssignmentStrategy implements RoomAssignmentStrategy {
 
-    private final String TYPE_BUSINESS = "Business";
-    private final String TYPE_LUXURY = "Luxe";
-    private final String TYPE_ECONOMIC = "Economic";
-    private final String STAY_PURPOSE_BUSINESS = "Affaire";
+    private final String TYPE_BUSINESS = "B";
+    private final String TYPE_LUXURY = "L";
+    private final String TYPE_ECONOMIC = "E";
+    private final String STAY_PURPOSE_BUSINESS = "Business";
     private final int FIRST_INDEX = 0;
     private final int Start_INDEX = 0;
 
@@ -40,6 +38,7 @@ public class StayPurposeAssignmentStrategy implements RoomAssignmentStrategy {
                     break;
             }
         }
+
 
         for (int i = Start_INDEX; i < reservations.size(); i++) {
             Reservation reservation = reservations.get(i);
@@ -73,7 +72,6 @@ public class StayPurposeAssignmentStrategy implements RoomAssignmentStrategy {
                 suggestions.add(new RoomAssignmentSuggestion(assignedRoom, reservation));
             }
         }
-
         hotel.setRoomAssignmentSuggestions(suggestions);
     }
 }
