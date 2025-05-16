@@ -12,6 +12,24 @@ public abstract class FileParser {
 
     protected static final String DELIMITER = ","; // Délimiteur par défaut
     protected static final int MAX_COLUMN_COUNT = 6; // Nombre de colonnes par défaut (à surcharger si besoin)
+    protected final String ROOM_TYPE_BUSINESS = "B";
+    protected final String ROOM_TYPE_ECONOMY = "E";
+    protected final String ROOM_TYPE_LUXURY = "L";
+    protected final String ROOM_TYPE_EMPTY = "Z";
+
+    protected final String ERR_INVALID_ROOM_TYPE = "Invalid room type: ";
+    protected final String ERR_INVALID_COLUMN_COUNT = "Invalid line format, expected ";
+    protected final String VALID_ROOM_TYPES = "Valid types are B (Business, E (Economy), L (Luxury), Z (empty space). ";
+    protected final String POSITIVE_INTEGER = " must be a positive integer.. ";
+    protected final String NO_NEGATIVE_INTEGER = "  must be a non-negative integer.. ";
+    protected final String ERR_INVALID_BOOLEAN_VALUE = "Invalid value for %s. Expected '%s' or '%s'.";
+
+
+    protected final int INITIAL_INDEX = 0;
+    protected final int VALUE = 1;
+
+    protected final String VALUE_TRUE = "True";
+    protected final String VALUE_FALSE = "False";
 
     // Lecture de lignes dans un fichier
     protected List<String> readLines(String filename, boolean skipFirstLine) throws IOException {
@@ -66,7 +84,7 @@ public abstract class FileParser {
     // Valider le nombre de colonnes
     protected void validateColumnCount(List<String> parts, int expectedColumnCount) {
         if (parts.size() != expectedColumnCount) {
-            throw new IllegalArgumentException("Invalid line format, expected " + expectedColumnCount + " columns.");
+            throw new IllegalArgumentException(ERR_INVALID_COLUMN_COUNT + expectedColumnCount + " columns.");
         }
     }
 
@@ -74,14 +92,14 @@ public abstract class FileParser {
     protected void validateRoomConfig(List<String> parts) {
         for (String part : parts) {
             if (!isValidRoomType(part)) {
-                throw new IllegalArgumentException("Invalid room type: " + part
-                        + ". Valid types are B (Business), E (Economy), L (Luxury), Z (empty space).");
+                throw new IllegalArgumentException(ERR_INVALID_ROOM_TYPE + part
+                        + VALID_ROOM_TYPES);
             }
         }
     }
 
     private boolean isValidRoomType(String part) {
-        return part.equals("B") || part.equals("E") || part.equals("L") || part.equals("Z");
+        return part.equals(ROOM_TYPE_BUSINESS) || part.equals(ROOM_TYPE_ECONOMY) || part.equals(ROOM_TYPE_LUXURY) || part.equals(ROOM_TYPE_EMPTY);
     }
 
     // Parsing utilitaires
@@ -89,8 +107,8 @@ public abstract class FileParser {
     protected int parseIntPositive(String value, String fieldName) {
         try {
             int parsed = Integer.parseInt(value.trim());
-            if (parsed < 1) {
-                throw new IllegalArgumentException(fieldName + " must be a positive integer.");
+            if (parsed < VALUE) {
+                throw new IllegalArgumentException(fieldName + POSITIVE_INTEGER );
             }
             return parsed;
         } catch (NumberFormatException e) {
@@ -101,22 +119,22 @@ public abstract class FileParser {
     protected int parseNonNegativeInt(String value, String fieldName) {
         try {
             int parsed = Integer.parseInt(value.trim());
-            if (parsed < 0) {
-                throw new IllegalArgumentException(fieldName + " must be a non-negative integer.");
+            if (parsed < INITIAL_INDEX) {
+                throw new IllegalArgumentException(fieldName + NO_NEGATIVE_INTEGER);
             }
             return parsed;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid " + fieldName + ": " + value);
+            throw new IllegalArgumentException(String.format(ERR_INVALID_BOOLEAN_VALUE, fieldName, VALUE_TRUE, VALUE_FALSE));
         }
     }
 
     protected boolean parseBoolean(String value, String fieldName) {
-        if (value.equalsIgnoreCase("True")) {
+        if (value.equalsIgnoreCase(VALUE_TRUE)) {
             return true;
-        } else if (value.equalsIgnoreCase("False")) {
+        } else if (value.equalsIgnoreCase(VALUE_FALSE)) {
             return false;
         } else {
-            throw new IllegalArgumentException("Invalid value for " + fieldName + ". Expected 'True' or 'False'.");
+            throw new IllegalArgumentException();
         }
     }
 
