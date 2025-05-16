@@ -105,7 +105,7 @@ public class HELBHotelController {
                 context.setStrategy(new StayPurposeAssignmentStrategy());
                 break;
             case "Sequential Assignment":
-                context.setStrategy(new NoStrategy());
+                context.setStrategy(new SequentialAssignmentStrategy());
                 break;
             default:
                 context.setStrategy(new NoStrategy());
