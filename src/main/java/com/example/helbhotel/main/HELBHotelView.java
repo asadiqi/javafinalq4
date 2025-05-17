@@ -29,33 +29,62 @@ public class HELBHotelView {
     private final double SCROLLPANE_PREF_HEIGHT = 400;
     private final String COLOR_BACKGROUND = "#F8F8F8";
     private final String COLOR_BORDER = "black";
+    private final String EMPTY_SPACE = "Z";
     private final int BORDER_WIDTH = 2;
     private final int BORDER_RADIUS = 25;
     private final int LABEL_WIDTH = 110;
     private final double BUTTON_PREF_WIDTH = 100;
     private final double BUTTON_PREF_HEIGHT = 60;
+    private static final int HBOX_SPACING = 20;
+    private static final int FLOOR_SELECTOR_SPACING = 10;
+    private static final int FLOOR_SELECTOR_PADDING = 10;
+    private static final int SORT_CONTAINER_SPACING = 10;
+    private static final int SORT_LABEL_WIDTH = 70;
+    private static final int SORT_CONTAINER_WIDTH = 180;
+    private static final double GRID_WRAPPER_PADDING = 10;
+    private static final String LABEL_FLOOR = "Floor :";
+    private static final String LABEL_SORT_BY = "Sort by:";
+    private static final List<String> SORT_OPTIONS = Arrays.asList("Name", "Roomnumber");
+    private static final double INSET_TOP = 0;
+    private static final double INSET_RIGHT = 0;
+    private static final double INSET_LEFT = 0;
+    private static final double TOPBOX_BOTTOM_PADDING = 10;
+    private final int INITIAT_INDEX = 0;
+    private final int ALPHABET_NUMBERS = 26;
+    private final int FIRST_NUMBER = 1;
+    private static final double ROOM_GRID_HGAP = 18;
+    private static final double ROOM_GRID_VGAP = 20;
+    private static final double ROOM_GRID_PADDING = 10;
+    private static final double SPACING_RESERVATION_ACTION_BOXES = 5;
+    private static final int SORT_LABEL_FONT_SIZE = 13;
+    private static final int SORT_LABEL_BORDER_WIDTH = 1;
+    private static final int SORT_LABEL_RADIUS = 5;
+    private static final String SORT_LABEL_PADDING = "5 10";
+    private HELBHotelController controller;
+    private final String FIRST_LETTER="A";
+    private static final int BORDER_RADIUS_PANEL = 15;
+    private static final String COLOR_PANEL_BACKGROUND = "white";
 
-        private HELBHotelController controller;
-        public Scene scene;
-        private VBox root;
-        private VBox mainWrapper;
-        private HBox mainContent;
-        public VBox leftPanel;
-        private VBox rightPanel;
-        private VBox buttonPanel;
-        private HBox topBox;
-        private ComboBox<String> floorSelector;
-        private ComboBox<String> reservationModeSelector;
-        private HELBReservationDetailView HELBReservationDetailView;
-        private HELBRoomDetailView HELBRoomDetailView;
-        private HELBVerifyCodeView HELBVerifyCodeView;
-        private ComboBox<String> sortComboBox;
+    public Scene scene;
+    private VBox root;
+    private VBox mainWrapper;
+    private HBox mainContent;
+    public VBox leftPanel;
+    private VBox rightPanel;
+    private VBox buttonPanel;
+    private HBox topBox;
+    private ComboBox<String> floorSelector;
+    private ComboBox<String> reservationModeSelector;
+    private HELBReservationDetailView HELBReservationDetailView;
+    private HELBRoomDetailView HELBRoomDetailView;
+    private HELBVerifyCodeView HELBVerifyCodeView;
+
 
         public HELBHotelView(HELBHotelController controller) {
             this.controller = controller;
             initiateViews();
             setupLegend();
-            setupRooms("A");
+            setupRooms(FIRST_LETTER);
             setupFloorSelector();
             setupReservationActionBoxes();
             setupSuggestions();
@@ -90,8 +119,9 @@ public class HELBHotelView {
 
             VBox panel = new VBox();
             panel.setStyle(String.format(
-                    "-fx-background-color: white; -fx-border-color: %s; -fx-border-width: %d; -fx-border-radius: 15; -fx-background-radius: 15;",
-                    COLOR_BORDER, BORDER_WIDTH));
+                    "-fx-background-color: %s; -fx-border-color: %s; -fx-border-width: %d; -fx-border-radius: %d; -fx-background-radius: %d;",
+                    COLOR_PANEL_BACKGROUND, COLOR_BORDER, BORDER_WIDTH, BORDER_RADIUS_PANEL, BORDER_RADIUS_PANEL
+            ));
             panel.setMinWidth(PANEL_MIN_WIDTH);
             panel.setPrefHeight(PANEL_PREF_HEIGHT);
             panel.setAlignment(Pos.CENTER);
@@ -105,7 +135,7 @@ public class HELBHotelView {
             this.leftPanel.setAlignment(Pos.CENTER);
             StackPane gridWrapper = new StackPane();
             gridWrapper.setPrefSize(PANEL_MIN_WIDTH, PANEL_PREF_HEIGHT);
-            gridWrapper.setPadding(new Insets(10));
+            gridWrapper.setPadding(new Insets(GRID_WRAPPER_PADDING));
             this.leftPanel.getChildren().add(gridWrapper);
             HBox.setHgrow(this.leftPanel, Priority.ALWAYS);
 
@@ -123,8 +153,8 @@ public class HELBHotelView {
             rightScrollPane.setPrefHeight(SCROLLPANE_PREF_HEIGHT);
             rightPanel.getChildren().add(rightScrollPane);
 
-            this.topBox = new HBox(20);
-            topBox.setPadding(new Insets(0, 0, 10, 0));
+            this.topBox = new HBox(HBOX_SPACING);
+            topBox.setPadding(new Insets(INSET_TOP, INSET_RIGHT, TOPBOX_BOTTOM_PADDING, INSET_LEFT));
             topBox.setAlignment(Pos.CENTER_LEFT);
 
             mainContent.getChildren().addAll(this.leftPanel, this.rightPanel);
@@ -140,19 +170,19 @@ public class HELBHotelView {
             legendBox.setPadding(new Insets(PADDING_LEGEND));
             legendBox.setAlignment(Pos.CENTER_LEFT);
 
-            for (int i = 0; i < controller.getRoomsInformation().size(); i++) {
+            for (int i = INITIAT_INDEX ; i < controller.getRoomsInformation().size(); i++) {
                 String[] info = controller.getRoomsInformation().get(i);
-                legendBox.getChildren().add(HELBHotelViewComponents.createLegend(info[0], info[1]));
+                legendBox.getChildren().add(HELBHotelViewComponents.createLegend(info[INITIAT_INDEX], info[FIRST_NUMBER]));
             }
 
-            mainWrapper.getChildren().add(0, legendBox);
+            mainWrapper.getChildren().add(INITIAT_INDEX, legendBox);
         }
 
         public void setupFloorSelector() {
-            HBox box = new HBox(10);
+            HBox box = new HBox(FLOOR_SELECTOR_SPACING);
             box.setAlignment(Pos.CENTER_LEFT);
-            box.setPadding(new Insets(10));
-            Label floorLabel = HELBHotelViewComponents.createLabel("Floor :", LABEL_WIDTH, Pos.CENTER,
+            box.setPadding(new Insets(FLOOR_SELECTOR_PADDING));
+            Label floorLabel = HELBHotelViewComponents.createLabel(LABEL_FLOOR, LABEL_WIDTH, Pos.CENTER,
                     true);
             this.floorSelector = new ComboBox<>();
             floorSelector.setOnAction(e -> {
@@ -163,12 +193,12 @@ public class HELBHotelView {
             });
             List<String> floorLabels = controller.getFloorNames();
 
-            for (int i = 0; i < floorLabels.size(); i++) {
+            for (int i = INITIAT_INDEX; i < floorLabels.size(); i++) {
                 String label = floorLabels.get(i);
                 String displayLabel = label + (i + 1); // A1, B2, ...
 
-                if (i < 26) {
-                    displayLabel = label + (i + 1); // A1, B2, ..., Z26
+                if (i < ALPHABET_NUMBERS) {
+                    displayLabel = label + (i + FIRST_NUMBER); // A1, B2, ..., Z26
                 } else {
                     displayLabel = label; // AA, AB, ...
                 }
@@ -185,18 +215,18 @@ public class HELBHotelView {
 
         public void setupRooms(String floorLabel) {
             GridPane grid = new GridPane();
-            grid.setHgap(18);
-            grid.setVgap(20);
-            grid.setPadding(new Insets(10));
+            grid.setHgap(ROOM_GRID_HGAP);
+            grid.setVgap(ROOM_GRID_VGAP);
+            grid.setPadding(new Insets(GRID_WRAPPER_PADDING));
             grid.setAlignment(Pos.CENTER);
 
             Room[][] floor = controller.getFloor(floorLabel);
 
-            for (int row = 0; row < floor.length; row++) {
-                for (int col = 0; col < floor[row].length; col++) {
+            for (int row = INITIAT_INDEX; row < floor.length; row++) {
+                for (int col = INITIAT_INDEX; col < floor[row].length; col++) {
                     Room room = floor[row][col];
 
-                    if (room.getRoomType().equals("Z")) {
+                    if (room.getRoomType().equals(EMPTY_SPACE)) {
                         continue;
                     }
 
@@ -208,12 +238,12 @@ public class HELBHotelView {
                     grid.add(btn, col, row);
                 }
             }
-            StackPane wrapper = (StackPane) leftPanel.getChildren().get(0);
+            StackPane wrapper = (StackPane) leftPanel.getChildren().get(INITIAT_INDEX);
             wrapper.getChildren().setAll(grid);
         }
 
         private void setupReservationActionBoxes() {
-            VBox reservationActionBoxesContainer = new VBox(5);
+            VBox reservationActionBoxesContainer = new VBox(SPACING_RESERVATION_ACTION_BOXES);
             reservationActionBoxesContainer.setAlignment(Pos.CENTER_RIGHT);
 
             Button verifyCodeButton = HELBHotelViewComponents.createVerifyCodeButton(null);
@@ -230,21 +260,22 @@ public class HELBHotelView {
                         setupSuggestions(); // recharge la liste dans la vue
                     });
 
-            HBox sortContainer = new HBox(10);
+            HBox sortContainer = new HBox(SORT_CONTAINER_SPACING);
             sortContainer.setAlignment(Pos.CENTER_LEFT);
-            sortContainer.setPrefWidth(180);
-            sortContainer.setMaxWidth(180);
+            sortContainer.setPrefWidth(SORT_CONTAINER_WIDTH);
+            sortContainer.setMaxWidth(SORT_CONTAINER_WIDTH);
 
-            Label sortLabel = HELBHotelViewComponents.createLabel("Sort by:", 70, Pos.CENTER, true);
+            Label sortLabel = HELBHotelViewComponents.createLabel(LABEL_SORT_BY, SORT_LABEL_WIDTH, Pos.CENTER, true);
             sortLabel.setStyle(sortLabel.getStyle() +
-                    "-fx-font-size: 13px;" +
-                    "-fx-border-width: 1;" +
-                    "-fx-border-radius: 5;" +
-                    "-fx-background-radius: 5;" +
-                    "-fx-padding: 5 10;");
+                    String.format("-fx-font-size: %dpx;", SORT_LABEL_FONT_SIZE) +
+                    String.format("-fx-border-width: %d;", SORT_LABEL_BORDER_WIDTH) +
+                    String.format("-fx-border-radius: %d;", SORT_LABEL_RADIUS) +
+                    String.format("-fx-background-radius: %d;", SORT_LABEL_RADIUS) +
+                    String.format("-fx-padding: %s;", SORT_LABEL_PADDING));
+
 
             ComboBox<String> sortComboBox = HELBHotelViewComponents.createSortByParamComboBox(
-                    new ArrayList<>(Arrays.asList("Name", "Roomnumber")),
+                    new ArrayList<>(SORT_OPTIONS),
                     null);
             sortComboBox.setOnAction(e -> {
                 String selected = sortComboBox.getValue();
@@ -262,12 +293,12 @@ public class HELBHotelView {
         public void setupSuggestions() {
             List<RoomAssignmentSuggestion> suggestions = controller.getSuggestions();
             buttonPanel.getChildren().clear();
-            for (int i = 0; i < suggestions.size(); i++) {
+            for (int i = INITIAT_INDEX; i < suggestions.size(); i++) {
                 RoomAssignmentSuggestion s = suggestions.get(i);
                 StringBuilder suggestionName = new StringBuilder();
-                suggestionName.append(s.getReservation().getFullName().split(" ")[0].substring(0, 1));
+                suggestionName.append(s.getReservation().getFullName().split(" ")[INITIAT_INDEX].substring(INITIAT_INDEX, FIRST_NUMBER));
                 suggestionName.append(".");
-                suggestionName.append(s.getReservation().getFullName().split(" ")[1]);
+                suggestionName.append(s.getReservation().getFullName().split(" ")[FIRST_NUMBER]);
                 suggestionName.append("\n");
                 suggestionName.append(s.getRoom().getName());
 
@@ -284,7 +315,7 @@ public class HELBHotelView {
         }
 
         public void reloadData() {
-            setupRooms("A");
+            setupRooms(FIRST_LETTER);
             setupSuggestions();
         }
     }
