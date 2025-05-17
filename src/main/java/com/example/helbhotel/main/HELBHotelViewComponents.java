@@ -13,49 +13,82 @@ import javafx.scene.layout.Region;
 
 public class HELBHotelViewComponents {
 
-    private final double WINDOW_WIDTH = 900;
-    private final double WINDOW_HEIGHT = 650;
-    private final double PADDING_GENERAL = 20;
-    private final double SPACING_MAIN_WRAPPER = 20;
-    private final double SPACING_MAIN_CONTENT = 20;
-    private final double SPACING_LEGEND_BOX = 30;
-    private final double SPACING_BUTTON_PANEL = 10;
-    private final double PADDING_MAIN_CONTENT = 10;
-    private final double PADDING_LEGEND = 10;
-    private final double PANEL_MIN_WIDTH = 200;
-    private final double PANEL_PREF_HEIGHT = 400;
-    private final double SCROLLPANE_PREF_HEIGHT = 400;
+    // Constantes de dimension et style
+    private static final double WINDOW_WIDTH = 900;
+    private static final double WINDOW_HEIGHT = 650;
+    private static final double PADDING_GENERAL = 20;
+    private static final double SPACING_MAIN_WRAPPER = 20;
+    private static final double SPACING_MAIN_CONTENT = 20;
+    private static final double SPACING_LEGEND_BOX = 30;
+    private static final double SPACING_BUTTON_PANEL = 10;
+    private static final double PADDING_MAIN_CONTENT = 10;
+    private static final double PADDING_LEGEND = 10;
+    private static final double PANEL_MIN_WIDTH = 200;
+    private static final double PANEL_PREF_HEIGHT = 400;
+    private static final double SCROLLPANE_PREF_HEIGHT = 400;
     private static final double HBOX_SPACING = 8;
-    private final String COLOR_BACKGROUND = "#F8F8F8";
+
+    private static final String COLOR_BACKGROUND = "#F8F8F8";
     private static final String COLOR_BORDER = "black";
-    private final int BORDER_WIDTH = 2;
-    private final int BORDER_RADIUS = 25;
+    private static final int BORDER_WIDTH = 2;
+    private static final int BORDER_RADIUS = 25;
+
     private static final int LABEL_WIDTH = 110;
     private static final int LABEL_HEIGHT = 35;
+
     private static final int COLOR_BOX_WIDTH = 35;
     private static final int COLOR_BOX_HEIGHT = 28;
+
+    private static final int FONT_SIZE_LABEL = 14;
     private static final int FONT_SIZE_BUTTON = 14;
+
     private static final int BUTTON_PADDING = 10;
-    private final String BUTTON_BG_COLOR_DEFAULT = "D9E1E8";
+    private static final String BUTTON_BG_COLOR_DEFAULT = "#D9E1E8";
     private static final String BUTTON_TEXT_FILL = "black";
-    private final double BUTTON_PREF_WIDTH = 100;
+    private static final double BUTTON_PREF_WIDTH = 180;
+    private static final double BUTTON_PREF_WIDTH_SORT = 100;
+
     private static final double BUTTON_PREF_HEIGHT = 60;
 
+    private static final double ROOM_BUTTON_WIDTH = 70;
+    private static final double ROOM_BUTTON_HEIGHT = 70;
+    private static final String ROOM_BUTTON_UNAVAILABLE_COLOR = "#FF0000";
+    private static final String LABEL_VERIFY =  "Verify Code";
+
+
+
+
+    private static final String LABEL_STYLE_TEMPLATE =
+            "-fx-font-size: %dpx;" +
+                    "%s" + // font-weight
+                    "-fx-border-color: black;" +
+                    "-fx-border-width: 1;" +
+                    "-fx-border-radius: 4;" +
+                    "-fx-background-radius: 4;" +
+                    "-fx-padding: 5 10 5 10;";
+
+    private static final String COLOR_BOX_STYLE_TEMPLATE =
+            "-fx-background-color: %s; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4;";
+
+    private static final String BUTTON_STYLE_TEMPLATE =
+            "-fx-background-color: %s; -fx-text-fill: %s; -fx-font-size: %dpx; %s -fx-padding: %dpx; -fx-border-radius: 5; -fx-border-color: black; -fx-border-width: 1;";
+
+    private static final String ROOM_BUTTON_STYLE_TEMPLATE =
+            "-fx-background-color: %s; -fx-border-color: %s; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-size: %dpx;";
+
+    private static final String VERIFY_BUTTON_STYLE = "-fx-font-size: 14px; -fx-font-weight: bold;";
+    private static final String RESERVATION_MODE_SELECTOR_STYLE = "-fx-font-size: 12px; -fx-background-radius: 5; -fx-padding: 4 8;";
 
     public static final Label createLabel(String text, double width, Pos alignment, boolean bold) {
         Label label = new Label(text);
         label.setPrefWidth(width);
         label.setAlignment(alignment);
-        String style = "-fx-font-size: 14px;" +
-                (bold ? "-fx-font-weight: bold;" : "") +
-                "-fx-border-color: black;" +
-                "-fx-border-width: 1;" +
-                "-fx-border-radius: 4;" +
-                "-fx-background-radius: 4;" +
-                "-fx-padding: 5 10 5 10;";
+        String fontWeight = bold ? "-fx-font-weight: bold;" : "";
+        String style = String.format(LABEL_STYLE_TEMPLATE, FONT_SIZE_LABEL, fontWeight);
         label.setStyle(style);
         return label;
     }
+
 
     public static final HBox createLegend(String text, String color) {
         HBox box = new HBox(HBOX_SPACING);
@@ -64,35 +97,26 @@ public class HELBHotelViewComponents {
         lbl.setMinHeight(LABEL_HEIGHT);
         Region colorBox = new Region();
         colorBox.setPrefSize(COLOR_BOX_WIDTH, COLOR_BOX_HEIGHT);
-        colorBox.setStyle(String.format(
-                "-fx-background-color: %s; -fx-border-color: black; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4;",
-                color));
+        colorBox.setStyle(String.format(COLOR_BOX_STYLE_TEMPLATE, color));
         box.getChildren().addAll(lbl, colorBox);
         return box;
     }
 
     public static final Button createRoomButton(Room room) {
         Button btn = new Button(room.getName());
-        btn.setPrefSize(70, 70);
+        btn.setPrefSize(ROOM_BUTTON_WIDTH, ROOM_BUTTON_HEIGHT);
         btn.setAlignment(Pos.CENTER);
-        String bgColor = room.isAvailable() ? room.getColor() : "#FF0000";
-        btn.setStyle(String.format(
-                "-fx-background-color: %s; -fx-border-color: %s; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-size: 14px;",
-                bgColor, COLOR_BORDER));
+        String bgColor = room.isAvailable() ? room.getColor() : ROOM_BUTTON_UNAVAILABLE_COLOR;
+        btn.setStyle(String.format(ROOM_BUTTON_STYLE_TEMPLATE, bgColor, COLOR_BORDER, FONT_SIZE_BUTTON));
+
         return btn;
     }
 
     public static final Button createButton(String text, String bgColor, boolean isBold) {
-        String safeColor = (bgColor == null || bgColor.isEmpty()) ? "#D9E1E8" : bgColor; // valeur par défaut
+        String safeColor = (bgColor == null || bgColor.isEmpty()) ? BUTTON_BG_COLOR_DEFAULT : bgColor;
         String fontWeight = isBold ? "-fx-font-weight: bold;" : "";
         Button btn = new Button(text);
-        btn.setStyle(String.format(
-                "-fx-background-color: %s; -fx-text-fill: %s; -fx-font-size: %dpx; %s -fx-padding: %dpx; -fx-border-radius: 5; -fx-border-color: black; -fx-border-width: 1;",
-                safeColor,
-                BUTTON_TEXT_FILL,
-                FONT_SIZE_BUTTON,
-                fontWeight,
-                BUTTON_PADDING));
+        btn.setStyle(String.format(BUTTON_STYLE_TEMPLATE, safeColor, BUTTON_TEXT_FILL, FONT_SIZE_BUTTON, fontWeight, BUTTON_PADDING));
         return btn;
     }
 
@@ -105,9 +129,9 @@ public class HELBHotelViewComponents {
     }
 
     public static final Button createVerifyCodeButton(EventHandler<ActionEvent> eventHandler) {
-        Button verifyButton = new Button("Verify Code");
-        verifyButton.setPrefSize(180, BUTTON_PREF_HEIGHT);
-        verifyButton.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        Button verifyButton = new Button(LABEL_VERIFY);
+        verifyButton.setPrefSize(BUTTON_PREF_WIDTH, BUTTON_PREF_HEIGHT);
+        verifyButton.setStyle(VERIFY_BUTTON_STYLE);
         verifyButton.setOnAction(eventHandler);
         return verifyButton;
     }
@@ -115,15 +139,15 @@ public class HELBHotelViewComponents {
     public static final ComboBox<String> createSortByParamComboBox(List<String> options,
                                                                    EventHandler<ActionEvent> eventHandler) {
         ComboBox<String> sortComboBox = createComboBox(options, eventHandler);
-        sortComboBox.setPrefWidth(100);
+        sortComboBox.setPrefWidth(BUTTON_PREF_WIDTH_SORT);
         return sortComboBox;
     }
 
     public static final ComboBox<String> createReservationModeSelector(List<String> options,
                                                                        EventHandler<ActionEvent> eventHandler) {
         ComboBox<String> modeSelector = createComboBox(options, eventHandler);
-        modeSelector.setStyle("-fx-font-size: 12px; -fx-background-radius: 5; -fx-padding: 4 8;");
-        modeSelector.setPrefWidth(180);
+        modeSelector.setStyle(RESERVATION_MODE_SELECTOR_STYLE);
+        modeSelector.setPrefWidth(BUTTON_PREF_WIDTH);
         return modeSelector;
     }
 
