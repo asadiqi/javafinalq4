@@ -26,7 +26,7 @@ public class HELBReservationDetailView {
     private static final String TOP_BOX_STYLE = String.format("-fx-border-color: %s; -fx-border-width: %dpx;", BORDER_COLOR, (int)BORDER_WIDTH_TOP_BOX);
     private static final String LEFT_BOX_STYLE = String.format("-fx-border-color: %s; -fx-border-width: 0px 0px 2px 2px;", BORDER_COLOR);
     private static final String RIGHT_BOX_STYLE = String.format("-fx-border-color: %s; -fx-border-width: 0px 2px 2px 2px;", BORDER_COLOR);
-    private static final String LABEL_DETAIL_RESERVATION = "Détail de la Réservation";
+    private static final String LABEL_DETAIL_RESERVATION = "Reservation Details";
     private static final String LABEL_RESERVATION_WINDOW = "Reservation Window";
     private static final String ROOM_PROPOSITION = "Room proposition:";
     private static final String BUTTON_COLOR_CONFIRM = "#34786F";
