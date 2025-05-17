@@ -11,6 +11,20 @@ public class ReservationParser extends FileParser {
     private ArrayList<Reservation> reservationList = new ArrayList<>();
     private int currentIndex = 0;
     private int maxIndex = 0;
+    private final int INDEX_LASTNAME = 0;
+    private final int INDEX_FIRSTNAME = 1;
+    private final int INDEX_NUMBER_OF_PEOPLE = 2;
+    private final int INDEX_SMOKER = 3;
+    private final int INDEX_TRIP_REASON = 4;
+    private final int INDEX_NUMBER_OF_CHILDREN = 5;
+    private final String ERR_NO_MORE_REQUESTS = "No more requests available";
+    private final String ERR_INVALID_TRIP_REASON = "Invalid trip reason: ";
+    private final String ERR_READING_RESERVATION_FILE = "Error reading the reservation file: ";
+    private final String FIELD_NUMBER_OF_PEOPLE = "Number of people";
+    private final String FIELD_SMOKER = "Smoker";
+    private final String FIELD_NUMBER_OF_CHILDREN = "Number of children";
+    private final String VALIDE = ". Valid reasons are: ";
+
 
     public ReservationParser(String filename) {
         parse(filename);
@@ -25,7 +39,7 @@ public class ReservationParser extends FileParser {
         if (hasNextRequest()) {
             return reservationList.get(currentIndex++);
         } else {
-            throw new IndexOutOfBoundsException("No more requests available");
+            throw new IndexOutOfBoundsException(ERR_NO_MORE_REQUESTS);
         }
     }
 
@@ -34,16 +48,16 @@ public class ReservationParser extends FileParser {
 
         validateColumnCount(parts, MAX_COLUMN_COUNT);
 
-        String nom = parts.get(0);
-        String prenom = parts.get(1);
-        int nombreDePersonnes = parseIntPositive(parts.get(2), "Number of people");
-        boolean fumeur = parseBoolean(parts.get(3), "Smoker");
-        String motifSejour = parts.get(4);
-        int nombreEnfants = parseNonNegativeInt(parts.get(5), "Number of children");
+        String nom = parts.get(INDEX_LASTNAME );
+        String prenom = parts.get(INDEX_FIRSTNAME );
+        int nombreDePersonnes = parseIntPositive(parts.get(INDEX_NUMBER_OF_PEOPLE ), FIELD_NUMBER_OF_PEOPLE );
+        boolean fumeur = parseBoolean(parts.get(INDEX_SMOKER ), FIELD_NUMBER_OF_CHILDREN );
+        String motifSejour = parts.get(INDEX_TRIP_REASON );
+        int nombreEnfants = parseNonNegativeInt(parts.get(INDEX_NUMBER_OF_CHILDREN ), FIELD_NUMBER_OF_CHILDREN );
 
         if (!VALID_TRIP_REASONS.contains(motifSejour)) {
             throw new IllegalArgumentException(
-                    "Invalid trip reason: " + motifSejour + ". Valid reasons are: " + VALID_TRIP_REASONS);
+                    ERR_INVALID_TRIP_REASON+ motifSejour + VALIDE + VALID_TRIP_REASONS);
         }
 
         return new Reservation(nom.concat(" ").concat(prenom), nombreDePersonnes, fumeur, motifSejour, nombreEnfants);
@@ -68,7 +82,7 @@ public class ReservationParser extends FileParser {
                 reservationList.add(request);
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException("Error reading the reservation file: " + e.getMessage(), e);
+            throw new IllegalArgumentException(ERR_READING_RESERVATION_FILE + e.getMessage(), e);
         } catch (IllegalArgumentException e) {
             throw e;
         }
