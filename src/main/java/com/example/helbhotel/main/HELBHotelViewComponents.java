@@ -13,50 +13,25 @@ import javafx.scene.layout.Region;
 
 public class HELBHotelViewComponents {
 
-    // Constantes de dimension et style
-    private static final double WINDOW_WIDTH = 900;
-    private static final double WINDOW_HEIGHT = 650;
-    private static final double PADDING_GENERAL = 20;
-    private static final double SPACING_MAIN_WRAPPER = 20;
-    private static final double SPACING_MAIN_CONTENT = 20;
-    private static final double SPACING_LEGEND_BOX = 30;
-    private static final double SPACING_BUTTON_PANEL = 10;
-    private static final double PADDING_MAIN_CONTENT = 10;
-    private static final double PADDING_LEGEND = 10;
-    private static final double PANEL_MIN_WIDTH = 200;
-    private static final double PANEL_PREF_HEIGHT = 400;
-    private static final double SCROLLPANE_PREF_HEIGHT = 400;
+
     private static final double HBOX_SPACING = 8;
-
-    private static final String COLOR_BACKGROUND = "#F8F8F8";
     private static final String COLOR_BORDER = "black";
-    private static final int BORDER_WIDTH = 2;
-    private static final int BORDER_RADIUS = 25;
-
     private static final int LABEL_WIDTH = 110;
     private static final int LABEL_HEIGHT = 35;
-
     private static final int COLOR_BOX_WIDTH = 35;
     private static final int COLOR_BOX_HEIGHT = 28;
-
     private static final int FONT_SIZE_LABEL = 14;
     private static final int FONT_SIZE_BUTTON = 14;
-
     private static final int BUTTON_PADDING = 10;
     private static final String BUTTON_BG_COLOR_DEFAULT = "#D9E1E8";
     private static final String BUTTON_TEXT_FILL = "black";
     private static final double BUTTON_PREF_WIDTH = 180;
     private static final double BUTTON_PREF_WIDTH_SORT = 100;
-
     private static final double BUTTON_PREF_HEIGHT = 60;
-
     private static final double ROOM_BUTTON_WIDTH = 70;
     private static final double ROOM_BUTTON_HEIGHT = 70;
     private static final String ROOM_BUTTON_UNAVAILABLE_COLOR = "#FF0000";
     private static final String LABEL_VERIFY =  "Verify Code";
-
-
-
 
     private static final String LABEL_STYLE_TEMPLATE =
             "-fx-font-size: %dpx;" +
@@ -77,6 +52,7 @@ public class HELBHotelViewComponents {
             "-fx-background-color: %s; -fx-border-color: %s; -fx-border-width: 1; -fx-border-radius: 4; -fx-background-radius: 4; -fx-font-size: %dpx;";
 
     private static final String VERIFY_BUTTON_STYLE = "-fx-font-size: 14px; -fx-font-weight: bold;";
+
     private static final String RESERVATION_MODE_SELECTOR_STYLE = "-fx-font-size: 12px; -fx-background-radius: 5; -fx-padding: 4 8;";
 
     public static final Label createLabel(String text, double width, Pos alignment, boolean bold) {
